@@ -1,4 +1,4 @@
-package Object;
+package PageObj;
 
 public class CartPage {
 }
