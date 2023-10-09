@@ -4,15 +4,21 @@ import Base.DriverInitiator;
 import PageObj.HomePage;
 import PageObj.LoginPage;
 import Util.ExcelUtil;
+import Util.ReportUtil;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.ITest;
 import org.testng.annotations.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-public class LoginTest extends DriverInitiator {
+@Listeners(
+        {
+                ReportUtil.class
+        }
+)
+public class LoginTest extends DriverInitiator implements ITest {
     WebDriver driver;
     LoginPage loginPage;
     HomePage homePage;
@@ -20,7 +26,6 @@ public class LoginTest extends DriverInitiator {
     @BeforeTest
     public void setup() {
         driver = super.createWebDriverSession();
-
     }
 
     @Test(dataProvider = "credentials")
@@ -52,5 +57,10 @@ public class LoginTest extends DriverInitiator {
         }
         return dataList.toArray(new String[dataList.size()][]);
 
+    }
+
+    @Override
+    public String getTestName() {
+        return "LoginTest";
     }
 }

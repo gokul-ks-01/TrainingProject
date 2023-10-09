@@ -3,11 +3,7 @@ package PageObj;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
-
 public class HomePage {
     WebDriver driver;
 
@@ -19,6 +15,8 @@ public class HomePage {
     @FindBy(id="search")
     WebElement searchBox;
 
+    @FindBy(xpath = "//div[@data-block='minicart']//child::span[@class='counter-number']")
+    WebElement cartItems;
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -40,4 +38,7 @@ public class HomePage {
         searchBox.sendKeys(Keys.ENTER);
     }
 
+    public String getCartItemsCount(){
+        return cartItems.getText();
+    }
 }
