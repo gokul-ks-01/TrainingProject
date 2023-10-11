@@ -1,8 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="TrainingProjectSuite">
+<suite name="TrainingProjectSuite" parallel="classes" thread-count="2">
     <test name="LoginTest">
         <classes>
             <class name="Test.LoginTest"/>
+            <class name = "Test.CartVerificationTest"/>
         </classes>
     </test>
 </suite>

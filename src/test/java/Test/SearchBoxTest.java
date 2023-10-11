@@ -15,12 +15,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import java.io.IOException;
-@Listeners(
-        {
-                ReportUtil.class
-        }
-)
-public class SearchBoxTest extends DriverInitiator implements ITest {
+
+public class SearchBoxTest extends DriverInitiator  {
     WebDriver driver;
     LoginPage loginPage;
     HomePage homePage;
@@ -50,8 +46,5 @@ public class SearchBoxTest extends DriverInitiator implements ITest {
         driver.quit();
     }
 
-    @Override
-    public String getTestName() {
-        return "searchBoxTest";
-    }
+
 }
