@@ -11,55 +11,70 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.ITest;
 import org.testng.ITestResult;
+import org.testng.TestException;
 import org.testng.annotations.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 public class LoginTest extends DriverInitiator {
     WebDriver driver;
     LoginPage loginPage;
     HomePage homePage;
+    ReportUtil report;
+    ExtentReports extentReport;
     ExtentTest extentTest;
-    ExtentReports exentReport;
+
+
     @BeforeTest
     public void setup() {
         driver = super.createWebDriverSession();
-        ReportUtil report = new ReportUtil();
-        exentReport = report.createTestReport();
+        report = new ReportUtil("testReport.html");
+        extentReport = report.createTestReport();
     }
 
-    @Test(dataProvider = "credentials")
+    @Test(dataProvider = "credentials", testName = "LoginTest")
     public void loginTest(String user, String pass) {
-
-         extentTest= exentReport.createTest("loginTest","Starting");
+        extentTest = extentReport.createTest("loginTest",
+                "Test to verify one valid credential and one incorrect credential");
         driver.get(PAGE_URL);
         loginPage = PageFactory.initElements(driver, LoginPage.class);
+        extentTest.log(Status.PASS, "Launched URL");
         loginPage.enterUserName(user);
         loginPage.enterPassword(pass);
         loginPage.submit();
         homePage = PageFactory.initElements(driver, HomePage.class);
-        Assert.assertEquals(homePage.getPageTitle(), "My Account");
-        homePage.logout();
+        try {
+            Assert.assertEquals(homePage.getPageTitle(), "My Account");
+            extentTest.log(Status.PASS, "Successful login to Account page");
+            homePage.logout();
+            extentTest.log(Status.PASS, "Logged out from the application");
+        } catch (AssertionError assertionError) {
+            extentTest.log(Status.FAIL, "Invalid Credentials");
+            throw new TestException("Assertion Error");
+        }
+
     }
+
     @AfterMethod
     public void getResult(ITestResult result) {
-        if(result.getStatus() == ITestResult.FAILURE) {
-            extentTest.log(Status.FAIL,result.getThrowable());
-        }
-        else if(result.getStatus() == ITestResult.SUCCESS) {
-            extentTest.log(Status.PASS, result.getTestName());
-        }
-        else {
-            extentTest.log(Status.SKIP, result.getTestName());
+        if (result.getStatus() == ITestResult.FAILURE) {
+            extentTest.log(Status.FAIL, result.getThrowable());
+        } else if (result.getStatus() == ITestResult.SUCCESS) {
+            extentTest.log(Status.PASS, result.getName());
+        } else {
+            extentTest.log(Status.SKIP, result.getName());
         }
     }
+
     @AfterTest
     public void tearDown() {
-        driver.quit();
-        exentReport.flush();
+        driver.close();
+        extentReport.flush();
     }
+
 
     @DataProvider(name = "credentials")
     public Object[][] credentials() throws IOException {
