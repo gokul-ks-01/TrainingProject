@@ -1,9 +1,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="TrainingProjectSuite" parallel="classes" thread-count="3">
     <test name="LoginTest">
+        <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="Test.LoginTest"/>
-            <class name = "Test.SearchBoxTest"/>
+            <class name="Test.LoginTest"></class>
+        </classes>
+    </test>
+    <test name="CartVerificationTest">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="Test.CartVerificationTest"></class>
         </classes>
     </test>
 </suite>

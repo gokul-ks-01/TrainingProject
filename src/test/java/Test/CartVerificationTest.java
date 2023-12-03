@@ -21,8 +21,9 @@ public class CartVerificationTest extends DriverInitiator {
     ExtentReports extentReport;
 
     @BeforeTest
-    public void setup() {
-        driver = super.createWebDriverSession();
+    @Parameters({"browser"})
+    public void setup(String browser) {
+        driver = super.createWebDriverSession(browser);
     }
 
     @Test

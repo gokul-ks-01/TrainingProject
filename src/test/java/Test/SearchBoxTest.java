@@ -10,10 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.ITest;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
 import java.io.IOException;
 
 public class SearchBoxTest extends DriverInitiator  {
@@ -23,8 +21,9 @@ public class SearchBoxTest extends DriverInitiator  {
     ResultsPage resultsPage;
 
     @BeforeTest
-    public void setup() {
-        driver = super.createWebDriverSession();
+    @Parameters({"browser"})
+    public void setup(String browser) {
+        driver = super.createWebDriverSession(browser);
     }
 
     @Test

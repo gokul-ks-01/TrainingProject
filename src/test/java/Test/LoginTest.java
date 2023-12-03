@@ -5,6 +5,7 @@ import PageObj.HomePage;
 import PageObj.LoginPage;
 import Util.ExcelUtil;
 import Util.ReportUtil;
+import Util.RetryAnalyzer;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -29,13 +30,14 @@ public class LoginTest extends DriverInitiator {
 
 
     @BeforeTest
-    public void setup() {
-        driver = super.createWebDriverSession();
+    @Parameters({"browser"})
+    public void setup(String browser) {
+        driver = super.createWebDriverSession(browser);
         report = new ReportUtil("testReport.html");
         extentReport = report.createTestReport();
     }
 
-    @Test(dataProvider = "credentials", testName = "LoginTest")
+    @Test(dataProvider = "credentials", testName = "LoginTest",retryAnalyzer =  RetryAnalyzer.class)
     public void loginTest(String user, String pass) {
         extentTest = extentReport.createTest("loginTest",
                 "Test to verify one valid credential and one incorrect credential");
