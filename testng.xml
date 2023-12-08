@@ -1,15 +1,18 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="TrainingProjectSuite" parallel="classes" thread-count="3">
+    <listeners>
+        <listener class-name="Util.ReportUtil" />
+    </listeners>
     <test name="LoginTest">
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="Test.LoginTest"></class>
         </classes>
     </test>
-    <test name="CartVerificationTest">
+    <test name="SearchBoxTest">
         <parameter name="browser" value="firefox"/>
         <classes>
-            <class name="Test.CartVerificationTest"></class>
+            <class name="Test.SearchBoxTest"></class>
         </classes>
     </test>
 </suite>

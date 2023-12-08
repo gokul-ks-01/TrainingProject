@@ -6,7 +6,6 @@ import PageObj.LoginPage;
 import Util.ExcelUtil;
 import Util.ReportUtil;
 import Util.RetryAnalyzer;
-import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.WebDriver;
@@ -20,30 +19,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Listeners(Util.ReportUtil.class)  // Add this line to make ReportUtil a listener
 public class LoginTest extends DriverInitiator {
-    WebDriver driver;
-    LoginPage loginPage;
-    HomePage homePage;
-    ReportUtil report;
-    ExtentReports extentReport;
-    ExtentTest extentTest;
+
+    private WebDriver driver;
+    private LoginPage loginPage;
+    private HomePage homePage;
+    private static ReportUtil reportUtil;
+    private ExtentTest extentTest;
 
 
     @BeforeTest
     @Parameters({"browser"})
     public void setup(String browser) {
         driver = super.createWebDriverSession(browser);
-        report = new ReportUtil("testReport.html");
-        extentReport = report.createTestReport();
     }
 
-    @Test(dataProvider = "credentials", testName = "LoginTest",retryAnalyzer =  RetryAnalyzer.class)
+    @Test(dataProvider = "credentials", testName = "LoginTest", retryAnalyzer = RetryAnalyzer.class)
     public void loginTest(String user, String pass) {
-        extentTest = extentReport.createTest("loginTest",
-                "Test to verify one valid credential and one incorrect credential");
+        extentTest = reportUtil.getExtentReports().createTest("LoginTest");
         driver.get(PAGE_URL);
         loginPage = PageFactory.initElements(driver, LoginPage.class);
-        extentTest.log(Status.PASS, "Launched URL");
+        extentTest.log(Status.INFO, "Launched URL");
         loginPage.enterUserName(user);
         loginPage.enterPassword(pass);
         loginPage.submit();
@@ -54,34 +51,20 @@ public class LoginTest extends DriverInitiator {
             homePage.logout();
             extentTest.log(Status.PASS, "Logged out from the application");
         } catch (AssertionError assertionError) {
-            extentTest.log(Status.FAIL, "Invalid Credentials");
+            extentTest.log(Status.FAIL, "Login Test Failed: Invalid Credentials");
+            extentTest.log(Status.FAIL, "Expected: 'My Account', Actual: '" + homePage.getPageTitle() + "'");
             throw new TestException("Assertion Error");
-        }
-
-    }
-
-    @AfterMethod
-    public void getResult(ITestResult result) {
-        if (result.getStatus() == ITestResult.FAILURE) {
-            extentTest.log(Status.FAIL, result.getThrowable());
-        } else if (result.getStatus() == ITestResult.SUCCESS) {
-            extentTest.log(Status.PASS, result.getName());
-        } else {
-            extentTest.log(Status.SKIP, result.getName());
         }
     }
 
     @AfterTest
     public void tearDown() {
-        driver.close();
-        extentReport.flush();
+        driver.quit();
     }
-
 
     @DataProvider(name = "credentials")
     public Object[][] credentials() throws IOException {
-
-        List<String[]> dataList = new ArrayList<String[]>();
+        List<String[]> dataList = new ArrayList<>();
         ExcelUtil util = new ExcelUtil();
         for (int i = 1; i < 3; i++) {
             String usr = util.ReadExcel(i, 0);
@@ -89,7 +72,5 @@ public class LoginTest extends DriverInitiator {
             dataList.add(new String[]{usr, pass});
         }
         return dataList.toArray(new String[dataList.size()][]);
-
     }
-
 }
