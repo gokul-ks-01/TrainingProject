@@ -10,7 +10,6 @@ import com.aventstack.extentreports.ExtentTest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.ITest;
 import org.testng.annotations.*;
 
 import java.io.IOException;

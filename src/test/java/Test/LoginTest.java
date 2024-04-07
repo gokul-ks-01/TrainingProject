@@ -11,15 +11,13 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.ITestResult;
 import org.testng.TestException;
 import org.testng.annotations.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Listeners(Util.ReportUtil.class)  // Add this line to make ReportUtil a listener
+@Listeners(Util.ReportUtil.class)
 public class LoginTest extends DriverInitiator {
 
     private WebDriver driver;

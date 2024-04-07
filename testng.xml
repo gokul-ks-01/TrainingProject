@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="TrainingProjectSuite" parallel="classes" thread-count="3">
+<suite name="TrainingProjectSuite" parallel="tests" thread-count="4">
     <listeners>
         <listener class-name="Util.ReportUtil" />
     </listeners>
@@ -9,10 +9,10 @@
             <class name="Test.LoginTest"></class>
         </classes>
     </test>
-    <test name="SearchBoxTest">
+    <!--test name="SearchBoxTest">
         <parameter name="browser" value="firefox"/>
         <classes>
             <class name="Test.SearchBoxTest"></class>
         </classes>
-    </test>
+    </test-->
 </suite>

@@ -9,16 +9,14 @@ import org.testng.ITestResult;
 
 public class ReportUtil implements ITestListener {
 
-    private static ExtentReports extentReports;
-    private static ExtentHtmlReporter htmlReporter;
+    private static final ExtentReports extentReports;
 
     static {
         String reportPath = System.getProperty("user.dir") + "/test-output/ExtentReport.html";
-        htmlReporter = new ExtentHtmlReporter(reportPath);
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath);
         htmlReporter.config().setDocumentTitle("Automation Report");
         htmlReporter.config().setReportName("Test Automation Results");
         htmlReporter.config().setTheme(Theme.STANDARD);
-
         extentReports = new ExtentReports();
         extentReports.attachReporter(htmlReporter);
     }
